@@ -1,0 +1,144 @@
+{
+  "name": "Anubhav Kumar Yadav",
+  "tagline": "B.Tech CSE Student • Data Structures and Algorithms  • Full-Stack Developer • AI Enthusiast",
+  "location": "Prayagraj, India",
+  "email": "dsc2anubhavyadav891@gmail.com",
+  "github": "https://github.com/",
+  "linkedin": "https://linkedin.com/",
+  "leetcode": "https://leetcode.com/",
+  "codeforces": "https://codeforces.com/",
+  "bio": "Computer Science undergraduate at J.K. Institute of Applied Physics & Technology (University of Allahabad) with an 8.0 CGPA. Skilled in MERN stack, Python ML pipelines, Algorithmic Problem Solving, and scalable web systems.",
+  "metrics": [
+    {
+      "label": "B.Tech CGPA",
+      "value": "8.0 / 10"
+    },
+    {
+      "label": "Class 12th Board",
+      "value": "92.8%"
+    },
+    {
+      "label": "Class 10th Board",
+      "value": "84.0%"
+    },
+    {
+      "label": "Key Domain Focus",
+      "value": "DSA & MERN"
+    }
+  ],
+  "skills": {
+    "Languages": [
+      "C",
+      "C++",
+      "Python",
+      "JavaScript",
+      "SQL",
+      "HTML",
+      "CSS"
+    ],
+    "Frameworks & Web": [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "Flask",
+      "Tailwind CSS"
+    ],
+    "Databases & Tools": [
+      "MongoDB",
+      "MySQL",
+      "VS Code",
+      "Git",
+      "GitHub",
+      "Netlify",
+      "Vercel"
+    ],
+    "Core CS Fundamentals": [
+      "Data Structures & Algorithms",
+      "DBMS",
+      "OOP",
+      "Operating Systems",
+      "Computer Networks",
+      "Theory of Computation",
+      "AI"
+    ]
+  },
+  "experience": [
+    {
+      "role": "MERN Stack Development Intern",
+      "company": "SkillFied Mentor",
+      "period": "Mar 2026 – Apr 2026",
+      "link": "https://example.com/internship-certificate",
+      "points": [
+        "Architected full-stack web applications using MongoDB, Express.js, React.js, and Node.js.",
+        "Implemented secure JWT-based authentication, user authorization, and bcrypt password hashing.",
+        "Collaborated on unit testing, bug diagnostics, and CI/CD deployment workflows."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "MaayaBreaker: AI Deepfake & Misinformation Defense",
+      "badge": "AI & Active Defense",
+      "description": "Multi-platform AI defense engine that detects deepfakes, phishing, and malicious media in real time across images, video, audio, and text. Features explainable heatmaps and active countermeasures against scam calls.",
+      "tech": [
+        "Python",
+        "Computer Vision",
+        "Deepfake Detection",
+        "Cloud APIs"
+      ],
+      "github": "https://github.com",
+      "live": "https://github.com"
+    },
+    {
+      "title": "Thunderstorm Prediction Web App",
+      "badge": "Machine Learning",
+      "description": "Weather-based predictive ML application that fetches real-time API atmospheric parameters to predict thunderstorm occurrences via an optimized Logistic Regression classifier.",
+      "tech": [
+        "Python",
+        "Flask",
+        "Scikit-Learn",
+        "Pandas",
+        "Joblib",
+        "Weather API"
+      ],
+      "github": "https://github.com",
+      "live": "https://github.com"
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Web Development Training Certificate",
+      "issuer": "STP Computer Education",
+      "date": "June 2025",
+      "link": "https://example.com/stp-certificate"
+    },
+    {
+      "title": "Tata Group AI Powered Data Analytics Simulation",
+      "issuer": "Forage",
+      "date": "August 2025",
+      "link": "https://forage-uploads-prod.s3.amazonaws.com"
+    },
+    {
+      "title": "CodeFront 2025: CP, CTF & Hackathon",
+      "issuer": "Google Developer Groups (GDSC JKIAPT)",
+      "date": "2025",
+      "link": "https://example.com/codefront-certificate"
+    }
+  ],
+  "education": [
+    {
+      "institution": "J.K. Institute of Applied Physics and Technology, University of Allahabad",
+      "degree": "Bachelor of Technology in Computer Science & Engineering",
+      "score": "GPA: 8.0",
+      "period": "2023 – Present",
+      "location": "Prayagraj, India"
+    },
+    {
+      "institution": "New R.S.J. Public School",
+      "degree": "Senior Secondary (Class 12) & Secondary (Class 10)",
+      "score": "12th: 92.8% | 10th: 84%",
+      "period": "2019 – 2022",
+      "location": "Prayagraj, India"
+    }
+  ]
+}
