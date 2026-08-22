@@ -19,7 +19,7 @@ export async function POST(req) {
     const { password, data } = body;
 
     // Default admin password (you can change it here)
-    if (password !== 'admin123') {
+    if (password !== 'Spidy#1234') {
       return NextResponse.json({ error: 'Unauthorized: Wrong password' }, { status: 401 });
     }
 
