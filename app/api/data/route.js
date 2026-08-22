@@ -18,14 +18,16 @@ export async function POST(req) {
     const body = await req.json();
     const { password, data } = body;
 
-    // Default admin password (you can change it here)
-    if (password !== 'Spidy#1234') {
-      return NextResponse.json({ error: 'Unauthorized: Wrong password' }, { status: 401 });
+    // Password is read securely from environment variables, or defaults to local pass
+    const SECRET_KEY = process.env.ADMIN_PASSWORD || 'Spidy#1234';
+
+    if (password !== SECRET_KEY) {
+      return NextResponse.json({ error: 'Unauthorized: Incorrect passcode' }, { status: 401 });
     }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
     return NextResponse.json({ message: 'Data updated successfully!' });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to save data' }, { status: 500 });
+    return NextResponse.json({ error: 'Read-only environment: update data via portfolio.json and push to GitHub' }, { status: 500 });
   }
 }
