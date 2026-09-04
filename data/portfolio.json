@@ -77,17 +77,17 @@
   ],
   "projects": [
     {
-      "title": "MaayaBreaker: AI Deepfake & Misinformation Defense",
-      "badge": "AI & Active Defense",
-      "description": "Multi-platform AI defense engine that detects deepfakes, phishing, and malicious media in real time across images, video, audio, and text. Features explainable heatmaps and active countermeasures against scam calls.",
+      "title": "MyLabor11 : Construction Labor & Contractor Marketplace",
+      "badge": "Full-Stack Web & Cloud",
+      "description": "Mobile-first, bilingual (Hindi/English) marketplace connecting contractors and daily-wage construction laborers with real-time sync, anti-spam contact gating, and PIN-secured post deletion.",
       "tech": [
-        "Python",
-        "Computer Vision",
-        "Deepfake Detection",
-        "Cloud APIs"
+        "Javascript",
+        "Tailwind CSS",
+        "Supabase",
+        "PostgreSQL"
       ],
-      "github": "https://github.com",
-      "live": "https://github.com"
+      "github": "https://github.com/anubhavkumaryadav/labor-connect",
+      "live": "https://anubhavkumaryadav.github.io/labor-connect/"
     },
     {
       "title": "Thunderstorm Prediction Web App",
