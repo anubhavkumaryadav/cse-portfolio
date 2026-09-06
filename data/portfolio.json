@@ -102,8 +102,8 @@
         "Joblib",
         "Weather API"
       ],
-      "github": "https://github.com",
-      "live": "https://github.com"
+      "github": "https://github.com/anubhavkumaryadav/thunderstorm-prediction",
+      "live": "http://will-thunderstorm-occur-ugv7nmlfv9zgz2xdyaytsb.streamlit.app/"
     }
   ],
   "certifications": [
