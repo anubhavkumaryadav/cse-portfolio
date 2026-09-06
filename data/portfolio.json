@@ -124,6 +124,12 @@
       "issuer": "Google Developer Groups (GDSC JKIAPT)",
       "date": "2025",
       "link": "https://example.com/codefront-certificate"
+    },
+    {
+      "title": "GATE Qualified",
+      "issuer": "IIT Guwahati",
+      "date": "2026",
+      "link": "https://example.com/codefront-certificate"
     }
   ],
   "education": [
