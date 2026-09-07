@@ -15,9 +15,6 @@ import {
   Award, 
   Cpu, 
   FolderGit2, 
-  ShieldCheck, 
-  Zap, 
-  Layers,
   ArrowUpRight
 } from 'lucide-react';
 
@@ -53,7 +50,7 @@ export default function PortfolioPage() {
       <div 
         className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300 opacity-60 hidden md:block"
         style={{
-          background: `radial-gradient(650px circle at ${mousePos.x}px${mousePos.y}px, rgba(6, 182, 212, 0.08), transparent 80%)`,
+          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(6, 182, 212, 0.08), transparent 80%)`,
         }}
       />
 
@@ -169,7 +166,7 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* ACADEMIC METRICS BANNER */}
+        {/* ACADEMIC METRICS */}
         {data.metrics && data.metrics.length > 0 && (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {data.metrics.map((metric, i) => (
@@ -189,7 +186,7 @@ export default function PortfolioPage() {
           </section>
         )}
 
-        {/* FEATURED PROJECTS (3 HIGH-IMPACT CARDS) */}
+        {/* FEATURED PROJECTS */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -264,9 +261,8 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* EXPERIENCE & CERTIFICATIONS TWO-COLUMN BENTO */}
+        {/* EXPERIENCE & CERTIFICATIONS */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Work Experience */}
           <div className="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 backdrop-blur-md space-y-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Briefcase className="text-cyan-400" size={18} /> Experience & Internships
@@ -294,7 +290,6 @@ export default function PortfolioPage() {
             </div>
           </div>
 
-          {/* Certifications & Trainings */}
           <div className="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 backdrop-blur-md space-y-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Award className="text-cyan-400" size={18} /> Credentials & Certifications
@@ -325,7 +320,6 @@ export default function PortfolioPage() {
 
       </main>
 
-      {/* Footer Terminal Note */}
       <footer className="border-t border-slate-900 mt-20 py-8 text-center text-xs font-mono text-slate-600">
         Engineered with Next.js & Tailwind CSS • Serverless GitHub Persistence
       </footer>
