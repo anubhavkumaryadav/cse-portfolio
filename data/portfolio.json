@@ -40,6 +40,12 @@
       "Data Structure & Algorithms(DSA)",
       "Competitive Programming"
     ],
+    "Mathematics & Quantitative Foundations": [
+      "Linear Algebra",
+      "Number Theory",
+      "Probability & Statistics",
+      "Discrete Mathematics"
+    ],
     "Frameworks & Web": [
       "React.js",
       "Node.js",

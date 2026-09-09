@@ -205,7 +205,7 @@ export default function PortfolioPage() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500 shadow-[0_0_10px_#06b6d4]" />
             </div>
             <span className="font-mono text-xs tracking-widest text-cyan-400 font-extrabold uppercase drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">
-              SYSTEM: {data.name?.split(' ')[0]?.toUpperCase() || "ENGINEER"}
+              SYSTEM: {data.name?.split(' ')[0]?.toUpperCase() || "ENGINEER"}.dev
             </span>
           </div>
 
@@ -248,9 +248,9 @@ export default function PortfolioPage() {
               <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest">
                 <Terminal size={14} /> SECURE IN-APP DISPATCH
               </div>
-              <h2 className="text-xl font-black text-white">Direct Transmission</h2>
+              <h2 className="text-xl font-black text-white">Connect with admin</h2>
               <p className="text-xs text-slate-400">
-                Transmits directly to <span className="text-cyan-300 font-mono">{data.email}</span>
+                send directly to <span className="text-cyan-300 font-mono">{data.email}</span>
               </p>
             </div>
 
@@ -260,7 +260,7 @@ export default function PortfolioPage() {
                   <CheckCircle2 size={24} />
                 </div>
                 <p className="text-sm font-bold text-white">TRANSMISSION DELIVERED</p>
-                <p className="text-xs text-slate-400">Message successfully transferred to inbox.</p>
+                <p className="text-xs text-slate-400">Be chill message sent</p>
               </div>
             ) : (
               <form onSubmit={handleSendMessage} className="space-y-4 pt-1">
@@ -313,7 +313,7 @@ export default function PortfolioPage() {
                   ) : (
                     <>
                       <Send size={14} />
-                      <span>Transmit Message</span>
+                      <span>Send</span>
                     </>
                   )}
                 </button>
@@ -347,7 +347,7 @@ export default function PortfolioPage() {
                 />
               </div>
               <div className="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-md bg-[#04060a] border border-cyan-500 text-cyan-300 text-[10px] font-mono tracking-wider font-bold shadow-lg">
-                RANK: PRO
+                RANK: 7th sem
               </div>
             </div>
 
@@ -355,7 +355,7 @@ export default function PortfolioPage() {
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs tracking-wider">
                   <Flame size={14} className="text-amber-400 animate-pulse" />
-                  <span>CSE UNDERGRAD // DEV & DSA</span>
+                  <span>B.Tech CSE // DSA, Dev & AI enthusiast</span>
                 </div>
                 {data.location && (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs">
