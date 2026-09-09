@@ -108,6 +108,21 @@
       ],
       "github": "https://github.com/anubhavkumaryadav/thunderstorm-prediction",
       "live": "http://will-thunderstorm-occur-ugv7nmlfv9zgz2xdyaytsb.streamlit.app/"
+    },
+    {
+      "title": "The Dead Coders Society",
+      "badge": "Full Stack Web & Cloud",
+      "description": "Build a competitive programming championship management platform for contests, leaderboards, rating, scoring, winners and participant tracking.",
+      "tech": [
+        "Next.js",
+        "Tailwind CSS",
+        "TypeScript",
+        "PostgreSQL",
+        "Prisma",
+        "Auth.js"
+      ],
+      "github": "https://github.com",
+      "live": "https://github.com"
     }
   ],
   "certifications": [
