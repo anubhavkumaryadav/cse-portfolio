@@ -14,9 +14,12 @@ import {
   Flame,
   Binary,
   MapPin,
-  Mail,
   Layers,
-  CheckCircle2
+  CheckCircle2,
+  Mail,
+  Send,
+  X,
+  MessageSquare
 } from 'lucide-react';
 
 function GithubIcon({ className = "w-4 h-4" }) {
@@ -49,6 +52,11 @@ export default function PortfolioPage() {
   const [bootProgress, setBootProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+  // Contact Modal State
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [senderEmail, setSenderEmail] = useState('');
+  const [senderMessage, setSenderMessage] = useState('');
+
   useEffect(() => {
     const interval = setInterval(() => {
       setBootProgress((prev) => {
@@ -74,6 +82,23 @@ export default function PortfolioPage() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (!senderEmail || !senderMessage) {
+      alert('Please enter both your email and message.');
+      return;
+    }
+
+    const targetEmail = data?.email || 'dsc2anubhavyadav891@gmail.com';
+    const subject = encodeURIComponent(`Portfolio Message from ${senderEmail}`);
+    const body = encodeURIComponent(`From: ${senderEmail}\n\nMessage:\n${senderMessage}`);
+    
+    // Direct email transmission to user's personal inbox
+    window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+    setIsContactOpen(false);
+    setSenderMessage('');
+  };
 
   if (loading || !data) {
     return (
@@ -124,7 +149,7 @@ export default function PortfolioPage() {
       />
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#0e1a2f15_1px,transparent_1px),linear-gradient(to_bottom,#0e1a2f15_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none" />
 
-      {/* HUD NAV */}
+      {/* TOP HUD NAVIGATION BAR */}
       <header className="sticky top-0 z-40 backdrop-blur-2xl bg-[#03060a]/80 border-b border-cyan-500/20 px-6 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -137,19 +162,91 @@ export default function PortfolioPage() {
             </span>
           </div>
 
-          <nav className="flex items-center gap-1 sm:gap-2 text-xs font-mono">
-            <a href="#about" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">About</a>
-            <a href="#skills" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">Skills</a>
-            <a href="#projects" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">Projects</a>
-            <a href="#experience" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition hidden sm:inline-block">Experience</a>
-            <a href="#education" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition hidden sm:inline-block">Education</a>
-          </nav>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <nav className="flex items-center gap-1 sm:gap-2 text-xs font-mono">
+              <a href="#about" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">About</a>
+              <a href="#skills" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">Skills</a>
+              <a href="#projects" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition">Projects</a>
+              <a href="#experience" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition hidden sm:inline-block">Experience</a>
+              <a href="#education" className="px-3 py-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/40 transition hidden sm:inline-block">Education</a>
+            </nav>
+
+            {/* GET IN TOUCH PRO HUD TRIGGER */}
+            <button
+              onClick={() => setIsContactOpen(true)}
+              className="relative group px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold text-black bg-cyan-400 hover:bg-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.5)] transition duration-300 flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
+            >
+              <Mail size={13} className="text-black" />
+              <span>Get In Touch</span>
+            </button>
+          </div>
         </div>
       </header>
 
+      {/* MODAL: CYBER TOUCH / DIRECT MESSAGE */}
+      {isContactOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-md bg-[#050912] border border-cyan-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.3)] space-y-5">
+            <button
+              onClick={() => setIsContactOpen(false)}
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest">
+                <Terminal size={14} /> TRANSMISSION LINK
+              </div>
+              <h2 className="text-xl font-black text-white">Direct Message</h2>
+              <p className="text-xs text-slate-400">
+                Send a message directly to <span className="text-cyan-300 font-mono">{data.email}</span>
+              </p>
+            </div>
+
+            <form onSubmit={handleSendMessage} className="space-y-4 pt-1">
+              <div>
+                <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
+                  <Mail size={13} className="text-cyan-400" /> Your Email Address
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="your.name@company.com"
+                  className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
+                  value={senderEmail}
+                  onChange={(e) => setSenderEmail(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
+                  <MessageSquare size={13} className="text-cyan-400" /> Your Message
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Type your message, opportunity, or collaboration details..."
+                  className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
+                  value={senderMessage}
+                  onChange={(e) => setSenderMessage(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-3 bg-cyan-400 hover:bg-cyan-300 text-black font-bold font-mono text-xs rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.4)] transition cursor-pointer hover:scale-[1.02]"
+              >
+                <Send size={14} /> Transmit Message
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <main className="max-w-6xl mx-auto px-6 py-12 space-y-16 relative z-10">
         
-        {/* HERO */}
+        {/* HERO SECTION */}
         <section id="about" className="relative rounded-3xl p-8 sm:p-12 border border-cyan-500/30 bg-gradient-to-br from-[#070e1c]/90 via-[#050912]/95 to-[#02050b] backdrop-blur-2xl shadow-[0_0_50px_rgba(6,182,212,0.1)] overflow-hidden">
           <div className="absolute -right-24 -top-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -left-24 -bottom-24 w-80 h-80 bg-fuchsia-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -201,7 +298,7 @@ export default function PortfolioPage() {
                 {data.bio}
               </p>
 
-              {/* SOCIAL & PROFILES */}
+              {/* SOCIAL HANDLES (CONTACT BUTTON REMOVED HERE) */}
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-2">
                 {data.github && (
                   <a href={data.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
@@ -221,11 +318,6 @@ export default function PortfolioPage() {
                 {data.codeforces && (
                   <a href={data.codeforces} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                     <CodeforcesIcon className="w-4 h-4 text-rose-400" /> Codeforces
-                  </a>
-                )}
-                {data.email && (
-                  <a href={`mailto:${data.email}`} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-                    <Mail size={14} className="text-teal-400" /> Contact
                   </a>
                 )}
               </div>
@@ -255,7 +347,7 @@ export default function PortfolioPage() {
           </section>
         )}
 
-        {/* SKILLS ARSENAL */}
+        {/* SKILLS */}
         {data.skills && (
           <section id="skills" className="space-y-6">
             <div className="flex items-center gap-2.5 border-b border-cyan-950/80 pb-3">
@@ -329,7 +421,7 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* WORK EXPERIENCE */}
+        {/* EXPERIENCE */}
         <section id="experience" className="space-y-6">
           <div className="flex items-center gap-2.5 border-b border-cyan-950/80 pb-3">
             <Briefcase className="text-cyan-400" size={22} />
@@ -368,7 +460,6 @@ export default function PortfolioPage() {
 
         {/* EDUCATION & CERTIFICATIONS */}
         <section id="education" className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Education */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b border-cyan-950/80 pb-3">
               <GraduationCap className="text-cyan-400" size={20} />
@@ -388,7 +479,6 @@ export default function PortfolioPage() {
             </div>
           </div>
 
-          {/* Certifications */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b border-cyan-950/80 pb-3">
               <Award className="text-cyan-400" size={20} />
