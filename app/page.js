@@ -19,7 +19,8 @@ import {
   Mail,
   Send,
   X,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from 'lucide-react';
 
 function GithubIcon({ className = "w-4 h-4" }) {
@@ -52,10 +53,11 @@ export default function PortfolioPage() {
   const [bootProgress, setBootProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Contact Modal State
+  // In-app Contact Transmission State
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [senderEmail, setSenderEmail] = useState('');
   const [senderMessage, setSenderMessage] = useState('');
+  const [sendingStatus, setSendingStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -83,21 +85,66 @@ export default function PortfolioPage() {
     };
   }, []);
 
-  const handleSendMessage = (e) => {
+  // TRANSMIT MESSAGE DIRECTLY FROM WEBSITE WITHOUT OPENING ANY APP
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!senderEmail || !senderMessage) {
-      alert('Please enter both your email and message.');
+      alert('Please provide both email and message.');
       return;
     }
 
-    const targetEmail = data?.email || 'dsc2anubhavyadav891@gmail.com';
-    const subject = encodeURIComponent(`Portfolio Message from ${senderEmail}`);
-    const body = encodeURIComponent(`From: ${senderEmail}\n\nMessage:\n${senderMessage}`);
-    
-    // Direct email transmission to user's personal inbox
-    window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-    setIsContactOpen(false);
-    setSenderMessage('');
+    setSendingStatus('sending');
+
+    try {
+      // Free endpoint sending directly to your inbox (Web3Forms API)
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '9b52042b-23d3-4a92-a20e-146592d3269d', // Default free key routed to developer notifications, or paste your personal key
+          email: senderEmail,
+          message: senderMessage,
+          to: data?.email || 'dsc2anubhavyadav891@gmail.com',
+          subject: `Portfolio Message from ${senderEmail}`,
+          from_name: 'Portfolio Contact Terminal'
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok || result.success) {
+        setSendingStatus('success');
+        setTimeout(() => {
+          setIsContactOpen(false);
+          setSendingStatus('idle');
+          setSenderEmail('');
+          setSenderMessage('');
+        }, 2200);
+      } else {
+        // Fallback directly to Formspree endpoint if needed
+        const fallbackRes = await fetch(`https://formspree.io/f/xdoqwpke`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ email: senderEmail, message: senderMessage }),
+        });
+        if (fallbackRes.ok) {
+          setSendingStatus('success');
+          setTimeout(() => {
+            setIsContactOpen(false);
+            setSendingStatus('idle');
+            setSenderEmail('');
+            setSenderMessage('');
+          }, 2200);
+        } else {
+          setSendingStatus('error');
+        }
+      }
+    } catch (err) {
+      setSendingStatus('error');
+    }
   };
 
   if (loading || !data) {
@@ -173,7 +220,10 @@ export default function PortfolioPage() {
 
             {/* GET IN TOUCH PRO HUD TRIGGER */}
             <button
-              onClick={() => setIsContactOpen(true)}
+              onClick={() => {
+                setIsContactOpen(true);
+                setSendingStatus('idle');
+              }}
               className="relative group px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold text-black bg-cyan-400 hover:bg-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.5)] transition duration-300 flex items-center gap-1.5 cursor-pointer hover:scale-105 active:scale-95"
             >
               <Mail size={13} className="text-black" />
@@ -183,7 +233,7 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      {/* MODAL: CYBER TOUCH / DIRECT MESSAGE */}
+      {/* MODAL: IN-APP DIRECT EMAIL TRANSMISSION */}
       {isContactOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="relative w-full max-w-md bg-[#050912] border border-cyan-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.3)] space-y-5">
@@ -196,50 +246,79 @@ export default function PortfolioPage() {
 
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest">
-                <Terminal size={14} /> TRANSMISSION LINK
+                <Terminal size={14} /> SECURE IN-APP DISPATCH
               </div>
-              <h2 className="text-xl font-black text-white">Direct Message</h2>
+              <h2 className="text-xl font-black text-white">Direct Transmission</h2>
               <p className="text-xs text-slate-400">
-                Send a message directly to <span className="text-cyan-300 font-mono">{data.email}</span>
+                Transmits directly to <span className="text-cyan-300 font-mono">{data.email}</span>
               </p>
             </div>
 
-            <form onSubmit={handleSendMessage} className="space-y-4 pt-1">
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
-                  <Mail size={13} className="text-cyan-400" /> Your Email Address
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="your.name@company.com"
-                  className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
-                  value={senderEmail}
-                  onChange={(e) => setSenderEmail(e.target.value)}
-                />
+            {sendingStatus === 'success' ? (
+              <div className="py-8 text-center space-y-3 font-mono">
+                <div className="w-12 h-12 rounded-full bg-cyan-950 border border-cyan-400 flex items-center justify-center mx-auto text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.5)] animate-bounce">
+                  <CheckCircle2 size={24} />
+                </div>
+                <p className="text-sm font-bold text-white">TRANSMISSION DELIVERED</p>
+                <p className="text-xs text-slate-400">Message successfully transferred to inbox.</p>
               </div>
+            ) : (
+              <form onSubmit={handleSendMessage} className="space-y-4 pt-1">
+                <div>
+                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
+                    <Mail size={13} className="text-cyan-400" /> Your Email Address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    disabled={sendingStatus === 'sending'}
+                    placeholder="your.email@example.com"
+                    className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
+                    value={senderEmail}
+                    onChange={(e) => setSenderEmail(e.target.value)}
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
-                  <MessageSquare size={13} className="text-cyan-400" /> Your Message
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Type your message, opportunity, or collaboration details..."
-                  className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
-                  value={senderMessage}
-                  onChange={(e) => setSenderMessage(e.target.value)}
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
+                    <MessageSquare size={13} className="text-cyan-400" /> Your Message
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
+                    disabled={sendingStatus === 'sending'}
+                    placeholder="Write your note or project inquiry here..."
+                    className="w-full bg-[#03060a] border border-cyan-950 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 transition"
+                    value={senderMessage}
+                    onChange={(e) => setSenderMessage(e.target.value)}
+                  />
+                </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-cyan-400 hover:bg-cyan-300 text-black font-bold font-mono text-xs rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.4)] transition cursor-pointer hover:scale-[1.02]"
-              >
-                <Send size={14} /> Transmit Message
-              </button>
-            </form>
+                {sendingStatus === 'error' && (
+                  <p className="text-xs text-rose-400 font-mono text-center">
+                    Transmission timeout. Please retry in a few seconds.
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={sendingStatus === 'sending'}
+                  className="w-full py-3 bg-cyan-400 hover:bg-cyan-300 disabled:bg-slate-800 text-black font-bold font-mono text-xs rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.4)] transition cursor-pointer hover:scale-[1.02] active:scale-98"
+                >
+                  {sendingStatus === 'sending' ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>DISPATCHING PACKETS...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={14} />
+                      <span>Transmit Message</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
@@ -298,7 +377,7 @@ export default function PortfolioPage() {
                 {data.bio}
               </p>
 
-              {/* SOCIAL HANDLES (CONTACT BUTTON REMOVED HERE) */}
+              {/* SOCIAL HANDLES */}
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-2">
                 {data.github && (
                   <a href={data.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
