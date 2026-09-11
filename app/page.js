@@ -173,7 +173,7 @@ export default function PortfolioPage() {
               <Binary size={14} className="animate-pulse" />
               <span>INITIALIZING SYSTEM CORE</span>
             </div>
-            <p className="text-[11px] text-slate-500 font-mono tracking-wider">LOADING...... // {bootProgress}%</p>
+            <p className="text-[11px] text-slate-500 font-mono tracking-wider">LOADING......  {bootProgress}%</p>
           </div>
           <div className="w-full bg-slate-900/90 h-2.5 rounded-full overflow-hidden border border-cyan-500/40 p-0.5 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
             <div 
