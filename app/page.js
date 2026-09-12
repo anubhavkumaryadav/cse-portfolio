@@ -53,11 +53,11 @@ export default function PortfolioPage() {
   const [bootProgress, setBootProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // In-app Contact Transmission State
+  // Contact State
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [senderEmail, setSenderEmail] = useState('');
   const [senderMessage, setSenderMessage] = useState('');
-  const [sendingStatus, setSendingStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
+  const [sendingStatus, setSendingStatus] = useState('idle');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,7 +85,6 @@ export default function PortfolioPage() {
     };
   }, []);
 
-  // TRANSMIT MESSAGE DIRECTLY FROM WEBSITE WITHOUT OPENING ANY APP
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!senderEmail || !senderMessage) {
@@ -96,7 +95,6 @@ export default function PortfolioPage() {
     setSendingStatus('sending');
 
     try {
-      // Free endpoint sending directly to your inbox (Web3Forms API)
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
@@ -104,7 +102,7 @@ export default function PortfolioPage() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: '9b52042b-23d3-4a92-a20e-146592d3269d', // Default free key routed to developer notifications, or paste your personal key
+          access_key: 'b94e4321-4f1a-4712-9c3f-c3971c260178',
           email: senderEmail,
           message: senderMessage,
           to: data?.email || 'dsc2anubhavyadav891@gmail.com',
@@ -124,7 +122,6 @@ export default function PortfolioPage() {
           setSenderMessage('');
         }, 2200);
       } else {
-        // Fallback directly to Formspree endpoint if needed
         const fallbackRes = await fetch(`https://formspree.io/f/xdoqwpke`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -147,10 +144,25 @@ export default function PortfolioPage() {
     }
   };
 
+  // 1. LOADING SCREEN WITH image1.jpeg BACKGROUND
   if (loading || !data) {
     return (
       <div className="fixed inset-0 z-50 bg-[#03060a] flex flex-col items-center justify-center font-mono text-cyan-400 p-6 select-none overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(#06b6d418_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/image1.jpeg"
+            alt="Loading Backdrop"
+            fill
+            priority
+            className="object-cover object-center filter brightness-[0.25] contrast-125 blur-[1px]"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#03060a] via-transparent to-[#03060a]/90 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(#06b6d418_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        </div>
+
         <div className="relative z-10 flex flex-col items-center max-w-sm w-full space-y-6 text-center">
           <div className="relative">
             <div className="absolute -inset-3 rounded-full border border-dashed border-cyan-500/60 animate-spin" style={{ animationDuration: '6s' }} />
@@ -173,7 +185,7 @@ export default function PortfolioPage() {
               <Binary size={14} className="animate-pulse" />
               <span>INITIALIZING SYSTEM CORE</span>
             </div>
-            <p className="text-[11px] text-slate-500 font-mono tracking-wider">LOADING......  {bootProgress}%</p>
+            <p className="text-[11px] text-slate-400 font-mono tracking-wider">SYNCING SYSTEM RUNTIME // {bootProgress}%</p>
           </div>
           <div className="w-full bg-slate-900/90 h-2.5 rounded-full overflow-hidden border border-cyan-500/40 p-0.5 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
             <div 
@@ -186,15 +198,53 @@ export default function PortfolioPage() {
     );
   }
 
+  // 2. MAIN PORTFOLIO PAGE WITH SMOOTH MOVING image2.jpeg BACKGROUND
   return (
     <div className="min-h-screen bg-[#03060a] text-slate-200 selection:bg-cyan-500 selection:text-black relative overflow-x-hidden font-sans scroll-smooth">
+      
+      {/* Self-contained CSS Keyframes for the Moving Ambient Image */}
+      <style dynamic="true">{`
+        @keyframes slowAtmospherePan {
+          0% {
+            transform: scale(1.08) translate(0%, 0%);
+          }
+          50% {
+            transform: scale(1.15) translate(-2%, -2%);
+          }
+          100% {
+            transform: scale(1.08) translate(0%, 0%);
+          }
+        }
+        .moving-ambient-bg {
+          animation: slowAtmospherePan 28s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* Moving Background Image */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="relative w-[115%] h-[115%] -left-[7.5%] -top-[7.5%] moving-ambient-bg">
+          <Image
+            src="/image2.jpeg"
+            alt="Moving Atmosphere Backdrop"
+            fill
+            priority
+            className="object-cover object-center filter brightness-[0.20] contrast-125"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#03060a]/90 via-[#03060a]/75 to-[#03060a]/95" />
+      </div>
+
+      {/* Dynamic Cursor Flash Glow */}
       <div 
         className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300 opacity-60 hidden md:block"
         style={{
           background: `radial-gradient(750px circle at ${mousePos.x}px${mousePos.y}px, rgba(6, 182, 212, 0.09), transparent 80%)`,
         }}
       />
-      <div className="fixed inset-0 bg-[linear-gradient(to_right,#0e1a2f15_1px,transparent_1px),linear-gradient(to_bottom,#0e1a2f15_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none" />
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#0e1a2f15_1px,transparent_1px),linear-gradient(to_bottom,#0e1a2f15_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-1" />
 
       {/* TOP HUD NAVIGATION BAR */}
       <header className="sticky top-0 z-40 backdrop-blur-2xl bg-[#03060a]/80 border-b border-cyan-500/20 px-6 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
@@ -205,7 +255,7 @@ export default function PortfolioPage() {
               <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500 shadow-[0_0_10px_#06b6d4]" />
             </div>
             <span className="font-mono text-xs tracking-widest text-cyan-400 font-extrabold uppercase drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">
-              SYSTEM: {data.name?.split(' ')[0]?.toUpperCase() || "ENGINEER"}.dev
+              SYSTEM: {data.name?.split(' ')[0]?.toUpperCase() || "ENGINEER"}
             </span>
           </div>
 
@@ -236,7 +286,7 @@ export default function PortfolioPage() {
       {/* MODAL: IN-APP DIRECT EMAIL TRANSMISSION */}
       {isContactOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="relative w-full max-w-md bg-[#050912] border border-cyan-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.3)] space-y-5">
+          <div className="relative w-full max-w-md bg-[#050912]/95 border border-cyan-500/60 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(6,182,212,0.3)] space-y-5 backdrop-blur-2xl">
             <button
               onClick={() => setIsContactOpen(false)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition"
@@ -248,9 +298,9 @@ export default function PortfolioPage() {
               <div className="flex items-center gap-2 text-xs font-mono font-bold text-cyan-400 uppercase tracking-widest">
                 <Terminal size={14} /> SECURE IN-APP DISPATCH
               </div>
-              <h2 className="text-xl font-black text-white">Connect with admin</h2>
+              <h2 className="text-xl font-black text-white">Direct Transmission</h2>
               <p className="text-xs text-slate-400">
-                send directly to <span className="text-cyan-300 font-mono">{data.email}</span>
+                Transmits directly to <span className="text-cyan-300 font-mono">{data.email}</span>
               </p>
             </div>
 
@@ -260,7 +310,7 @@ export default function PortfolioPage() {
                   <CheckCircle2 size={24} />
                 </div>
                 <p className="text-sm font-bold text-white">TRANSMISSION DELIVERED</p>
-                <p className="text-xs text-slate-400">Be chill message sent</p>
+                <p className="text-xs text-slate-400">Message successfully transferred to inbox.</p>
               </div>
             ) : (
               <form onSubmit={handleSendMessage} className="space-y-4 pt-1">
@@ -313,7 +363,7 @@ export default function PortfolioPage() {
                   ) : (
                     <>
                       <Send size={14} />
-                      <span>Send</span>
+                      <span>Transmit Message</span>
                     </>
                   )}
                 </button>
@@ -326,7 +376,7 @@ export default function PortfolioPage() {
       <main className="max-w-6xl mx-auto px-6 py-12 space-y-16 relative z-10">
         
         {/* HERO SECTION */}
-        <section id="about" className="relative rounded-3xl p-8 sm:p-12 border border-cyan-500/30 bg-gradient-to-br from-[#070e1c]/90 via-[#050912]/95 to-[#02050b] backdrop-blur-2xl shadow-[0_0_50px_rgba(6,182,212,0.1)] overflow-hidden">
+        <section id="about" className="relative rounded-3xl p-8 sm:p-12 border border-cyan-500/30 bg-gradient-to-br from-[#070e1c]/80 via-[#050912]/85 to-[#02050b]/90 backdrop-blur-2xl shadow-[0_0_50px_rgba(6,182,212,0.1)] overflow-hidden">
           <div className="absolute -right-24 -top-24 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -left-24 -bottom-24 w-80 h-80 bg-fuchsia-500/10 rounded-full blur-3xl pointer-events-none" />
           
@@ -347,7 +397,7 @@ export default function PortfolioPage() {
                 />
               </div>
               <div className="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-md bg-[#04060a] border border-cyan-500 text-cyan-300 text-[10px] font-mono tracking-wider font-bold shadow-lg">
-                RANK: 7th sem
+                RANK: PRO
               </div>
             </div>
 
@@ -355,10 +405,10 @@ export default function PortfolioPage() {
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-mono text-xs tracking-wider">
                   <Flame size={14} className="text-amber-400 animate-pulse" />
-                  <span>B.Tech CSE // DSA, Dev & AI enthusiast</span>
+                  <span>CSE UNDERGRAD // DEV & DSA</span>
                 </div>
                 {data.location && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-slate-400 font-mono text-xs">
                     <MapPin size={12} className="text-rose-400" />
                     <span>{data.location}</span>
                   </div>
@@ -380,22 +430,22 @@ export default function PortfolioPage() {
               {/* SOCIAL HANDLES */}
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-2">
                 {data.github && (
-                  <a href={data.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                  <a href={data.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                     <GithubIcon className="w-4 h-4 text-cyan-400" /> GitHub
                   </a>
                 )}
                 {data.linkedin && (
-                  <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                  <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                     <LinkedinIcon className="w-4 h-4 text-cyan-400" /> LinkedIn
                   </a>
                 )}
                 {data.leetcode && (
-                  <a href={data.leetcode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                  <a href={data.leetcode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                     <Code2 size={16} className="text-amber-400" /> LeetCode
                   </a>
                 )}
                 {data.codeforces && (
-                  <a href={data.codeforces} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                  <a href={data.codeforces} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 border border-cyan-900/80 text-xs font-mono text-slate-300 transition-all hover:border-cyan-400 hover:text-white hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]">
                     <CodeforcesIcon className="w-4 h-4 text-rose-400" /> Codeforces
                   </a>
                 )}
@@ -412,7 +462,7 @@ export default function PortfolioPage() {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {data.metrics.map((metric, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-gradient-to-b from-[#08101e]/80 to-[#040810] border border-cyan-950 transition hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.2)]">
+                <div key={i} className="p-5 rounded-2xl bg-gradient-to-b from-[#08101e]/80 to-[#040810]/90 border border-cyan-950 backdrop-blur-xl transition hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.2)]">
                   <div className="text-[11px] font-mono uppercase text-slate-400 flex items-center justify-between">
                     <span>{metric.label}</span>
                     <GraduationCap size={15} className="text-cyan-400" />
@@ -436,11 +486,11 @@ export default function PortfolioPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {Object.entries(data.skills).map(([category, skillList], idx) => (
-                <div key={idx} className="p-5 rounded-2xl bg-gradient-to-b from-[#070e1b] to-[#03060d] border border-cyan-950 space-y-3 hover:border-cyan-500/40 transition">
+                <div key={idx} className="p-5 rounded-2xl bg-gradient-to-b from-[#070e1b]/80 to-[#03060d]/90 border border-cyan-950 backdrop-blur-xl space-y-3 hover:border-cyan-500/40 transition">
                   <h3 className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">{category}</h3>
                   <div className="flex flex-wrap gap-1.5">
                     {skillList.map((skill, sIdx) => (
-                      <span key={sIdx} className="text-[11px] font-mono px-2 py-1 rounded-md bg-slate-950 border border-slate-800 text-slate-300">
+                      <span key={sIdx} className="text-[11px] font-mono px-2 py-1 rounded-md bg-slate-950/90 border border-slate-800 text-slate-300">
                         {skill}
                       </span>
                     ))}
@@ -465,7 +515,7 @@ export default function PortfolioPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {data.projects?.map((proj, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-gradient-to-b from-[#070e1b] to-[#03060d] border border-cyan-950 flex flex-col justify-between hover:border-cyan-400 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)] transition">
+              <div key={idx} className="p-6 rounded-2xl bg-gradient-to-b from-[#070e1b]/80 to-[#03060d]/90 border border-cyan-950 backdrop-blur-xl flex flex-col justify-between hover:border-cyan-400 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)] transition">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-700/60">
@@ -509,7 +559,7 @@ export default function PortfolioPage() {
 
           <div className="space-y-4">
             {data.experience?.map((exp, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-gradient-to-b from-[#070e1b] to-[#03060d] border border-cyan-950 space-y-3">
+              <div key={idx} className="p-6 rounded-2xl bg-gradient-to-b from-[#070e1b]/80 to-[#03060d]/90 border border-cyan-950 backdrop-blur-xl space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                   <div>
                     <h3 className="text-base font-bold text-white">{exp.role}</h3>
@@ -546,7 +596,7 @@ export default function PortfolioPage() {
             </div>
             <div className="space-y-3">
               {data.education?.map((edu, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-slate-950/80 border border-cyan-950 space-y-1.5">
+                <div key={idx} className="p-4 rounded-xl bg-slate-950/80 border border-cyan-950 space-y-1.5 backdrop-blur-xl">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-sm text-white">{edu.degree}</span>
                     <span className="text-[10px] font-mono text-cyan-400">{edu.period}</span>
@@ -565,7 +615,7 @@ export default function PortfolioPage() {
             </div>
             <div className="space-y-3">
               {data.certifications?.map((cert, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-slate-950/80 border border-cyan-950 space-y-1">
+                <div key={idx} className="p-4 rounded-xl bg-slate-950/80 border border-cyan-950 space-y-1 backdrop-blur-xl">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-sm text-white">{cert.title}</span>
                     <span className="text-[10px] font-mono text-cyan-400">{cert.date}</span>
@@ -584,7 +634,7 @@ export default function PortfolioPage() {
 
       </main>
 
-      <footer className="border-t border-cyan-950/80 mt-24 py-8 text-center text-xs font-mono text-slate-600">
+      <footer className="border-t border-cyan-950/80 mt-24 py-8 text-center text-xs font-mono text-slate-600 relative z-10">
         Designed & Built by Anubhav Kumar Yadav • Next.js & Tailwind CSS
       </footer>
     </div>
